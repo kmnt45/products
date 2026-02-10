@@ -1,6 +1,6 @@
 import { type FC, useMemo } from 'react';
 
-import { Flex, Table, Typography } from 'antd';
+import { Flex, Progress, Table, Typography } from 'antd';
 import { type ColumnsType } from 'antd/es/table';
 
 import { CircleEllipsis, PlusIcon } from 'shared/icons';
@@ -14,9 +14,10 @@ const { Text } = Typography;
 type ProductsTableProps = {
   data: Product[];
   loading: boolean;
+  progress: number;
 };
 
-export const ProductsTable: FC<ProductsTableProps> = ({ data, loading }) => {
+export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress }) => {
   const columns = useMemo<ColumnsType<Product>>(
     () => [
       {
@@ -93,11 +94,15 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading }) => {
   );
   return (
     <div className={styles.tableWrapper}>
+      {loading && (
+        <Progress percent={progress} size='small' showInfo={false} status='active' className={styles.progress} />
+      )}
+
       <Table
         rowKey='id'
         columns={columns}
         dataSource={data}
-        loading={loading}
+        loading={false}
         rowSelection={{ type: 'checkbox' }}
         pagination={{
           pageSize: 5,

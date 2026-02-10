@@ -15,12 +15,14 @@ const { Title } = Typography;
 
 export const ProductsPage: FC = () => {
   const search = useProductSearchStore((state) => state.search);
+  const { message } = App.useApp();
 
   const [debouncedSearch, setDebouncedSearch] = useState(search);
   const [isModalOpen, setModalOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
+  const [progress, setProgress] = useState(0);
 
-  const { message } = App.useApp();
+  const { data, loading, reload, error } = useProducts(debouncedSearch);
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 300);
@@ -28,7 +30,35 @@ export const ProductsPage: FC = () => {
     return () => clearTimeout(handler);
   }, [search]);
 
-  const { data, loading, reload, error } = useProducts(debouncedSearch);
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval> | null = null;
+
+    if (loading) {
+      setProgress(0);
+
+      interval = setInterval(() => {
+        setProgress((prev) => (prev < 90 ? prev + 10 : prev));
+      }, 200);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [loading]);
+
+  useEffect(() => {
+    if (!loading) {
+      setProgress(100);
+
+      const timeout = setTimeout(() => {
+        setProgress(0);
+      }, 300);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (error) {
@@ -84,7 +114,7 @@ export const ProductsPage: FC = () => {
           </Button>
         </Flex>
       </Flex>
-      <ProductsTable data={products} loading={loading} />
+      <ProductsTable data={products} loading={loading} progress={progress} />
       <AddProductModal open={isModalOpen} closeModal={handleCloseModal} addProduct={handleAddProduct} />
     </Flex>
   );
