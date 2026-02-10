@@ -1,7 +1,7 @@
 import { type FC, useMemo } from 'react';
 
-import { Flex, Progress, Table, Typography } from 'antd';
-import { type ColumnsType } from 'antd/es/table';
+import { Flex, Progress, Table, type TableProps, Typography } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 
 import { CircleEllipsis, PlusIcon } from 'shared/icons';
 import { formatPrice } from 'shared/lib';
@@ -15,9 +15,14 @@ type ProductsTableProps = {
   data: Product[];
   loading: boolean;
   progress: number;
+  sortState: {
+    field?: keyof Product;
+    order?: 'ascend' | 'descend';
+  };
+  onChangeSort: TableProps<Product>['onChange'];
 };
 
-export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress }) => {
+export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress, sortState, onChangeSort }) => {
   const columns = useMemo<ColumnsType<Product>>(
     () => [
       {
@@ -49,21 +54,18 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress 
         title: 'Оценка',
         dataIndex: 'rating',
         align: 'center',
-        sorter: (a, b) => a.rating - b.rating,
-        render: (value: number) =>
-          value ? (
-            <Text type={value < 3 ? 'danger' : undefined} className={styles.rating}>
-              {value}/5
-            </Text>
-          ) : (
-            <Text className={styles.rating}>Нет оценок</Text>
-          ),
+        sorter: true,
+        sortOrder: sortState.field === 'rating' ? sortState.order : undefined,
+        render: (value: number) => (
+          <Text type={value < 3 ? 'danger' : undefined}>{value ? `${value}/5` : 'Нет оценок'}</Text>
+        ),
       },
       {
         title: 'Цена, ₽',
         dataIndex: 'price',
         align: 'center',
-        sorter: (a, b) => a.price - b.price,
+        sorter: true,
+        sortOrder: sortState.field === 'price' ? sortState.order : undefined,
         render: (value: number) => {
           const { rub, kop } = formatPrice(value);
 
@@ -90,8 +92,9 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress 
         ),
       },
     ],
-    [],
+    [sortState],
   );
+
   return (
     <div className={styles.tableWrapper}>
       {loading && (
@@ -103,6 +106,7 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress 
         columns={columns}
         dataSource={data}
         loading={false}
+        onChange={onChangeSort}
         rowSelection={{ type: 'checkbox' }}
         pagination={{
           pageSize: 5,

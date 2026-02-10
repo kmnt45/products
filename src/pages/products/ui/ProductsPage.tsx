@@ -1,6 +1,7 @@
-import { type FC, useEffect, useState } from 'react';
+import { type FC, useEffect, useMemo, useState } from 'react';
 
-import { App, Button, Flex, Typography } from 'antd';
+import { App, Button, Flex, type TableProps, Typography } from 'antd';
+import type { SortOrder } from 'antd/es/table/interface';
 
 import { useProductSearchStore } from 'features/productsSearch';
 import { PlusCircleIcon, RefreshIcon } from 'shared/icons';
@@ -13,6 +14,11 @@ import { useProducts } from '../model/useProducts';
 
 const { Title } = Typography;
 
+export type SortState = {
+  field: keyof Product | null;
+  order: SortOrder;
+};
+
 export const ProductsPage: FC = () => {
   const search = useProductSearchStore((state) => state.search);
   const { message } = App.useApp();
@@ -21,6 +27,10 @@ export const ProductsPage: FC = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [progress, setProgress] = useState(0);
+  const [sortState, setSortState] = useState<SortState>({
+    field: null,
+    order: null,
+  });
 
   const { data, loading, reload, error } = useProducts(debouncedSearch);
 
@@ -74,6 +84,34 @@ export const ProductsPage: FC = () => {
     setProducts(data);
   }, [data]);
 
+  const sortedProducts = useMemo(() => {
+    if (!sortState.field || !sortState.order) {
+      return products;
+    }
+
+    const field = sortState.field;
+
+    return [...products].sort((a, b) => {
+      const aValue = a[field];
+      const bValue = b[field];
+
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return sortState.order === 'ascend' ? aValue - bValue : bValue - aValue;
+      }
+
+      return 0;
+    });
+  }, [products, sortState]);
+
+  const handleChangeSort: TableProps<Product>['onChange'] = (_, __, sorter) => {
+    if (!Array.isArray(sorter)) {
+      setSortState({
+        field: (sorter.field as keyof Product) ?? null,
+        order: sorter.order ?? null,
+      });
+    }
+  };
+
   const handleAddProduct = (dto: CreateProductDto) => {
     const newProduct: Product = {
       id: Date.now(),
@@ -114,7 +152,16 @@ export const ProductsPage: FC = () => {
           </Button>
         </Flex>
       </Flex>
-      <ProductsTable data={products} loading={loading} progress={progress} />
+      <ProductsTable
+        data={sortedProducts}
+        loading={loading}
+        progress={progress}
+        sortState={{
+          field: sortState.field ?? undefined,
+          order: sortState.order ?? undefined,
+        }}
+        onChangeSort={handleChangeSort}
+      />
       <AddProductModal open={isModalOpen} closeModal={handleCloseModal} addProduct={handleAddProduct} />
     </Flex>
   );
