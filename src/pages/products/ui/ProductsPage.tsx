@@ -24,6 +24,7 @@ export const ProductsPage: FC = () => {
 
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 300);
+
     return () => clearTimeout(handler);
   }, [search]);
 
@@ -50,8 +51,10 @@ export const ProductsPage: FC = () => {
       rating: 0,
       ...dto,
     };
+
     setProducts((prev) => [newProduct, ...prev]);
     setModalOpen(false);
+
     message.success('Товар успешно добавлен');
   };
 

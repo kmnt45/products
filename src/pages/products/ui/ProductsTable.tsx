@@ -4,6 +4,7 @@ import { Flex, Table, Typography } from 'antd';
 import { type ColumnsType } from 'antd/es/table';
 
 import { CircleEllipsis, PlusIcon } from 'shared/icons';
+import { formatPrice } from 'shared/lib';
 
 import styles from './ProductsTable.module.scss';
 import { type Product } from '../model/types';
@@ -63,8 +64,8 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading }) => {
         align: 'center',
         sorter: (a, b) => a.price - b.price,
         render: (value: number) => {
-          const formatted = value.toLocaleString('ru-RU', { minimumFractionDigits: 2 });
-          const [rub, kop] = formatted.split(',');
+          const { rub, kop } = formatPrice(value);
+
           return (
             <span className={styles.price}>
               {rub}
