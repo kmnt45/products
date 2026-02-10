@@ -57,7 +57,7 @@ export const ProductsTable: FC<ProductsTableProps> = ({ data, loading, progress,
         sorter: true,
         sortOrder: sortState.field === 'rating' ? sortState.order : undefined,
         render: (value: number) => (
-          <Text type={value < 3 ? 'danger' : undefined}>{value ? `${value}/5` : 'Нет оценок'}</Text>
+          <Text type={value && value < 3 ? 'danger' : undefined}>{value ? `${value}/5` : 'Нет оценок'}</Text>
         ),
       },
       {
