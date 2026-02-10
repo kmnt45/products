@@ -1,0 +1,114 @@
+@use 'shared/styles/variables' as *;
+
+.loginCard {
+  background: $white;
+  border-radius: $radius-giant;
+  padding: 6px;
+  box-shadow: 0 24px 32px 0 rgba(0, 0, 0, 0.04);
+  width: 100%;
+  max-width: 527px;
+  box-sizing: border-box;
+}
+
+.shadowContainer {
+  border-radius: $radius-xxlarge;
+  padding: 48px;
+  width: 100%;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(35, 35, 35, 0.03) 0%, rgba(35, 35, 35, 0) 50%);
+}
+
+.title {
+  margin: 0;
+  font-family: $font-tertiary;
+  font-weight: $fw-semi-bold;
+  font-size: $fs-xlarge;
+  letter-spacing: -0.01em;
+  color: $text-primary;
+}
+
+.text {
+  font-family: $font-tertiary;
+  font-weight: $fw-medium;
+  font-size: $fs-large;
+  color: $text-secondary;
+}
+
+.inputLabel {
+  font-family: $font-tertiary;
+  font-weight: $fw-medium;
+  font-size: $fs-large;
+  letter-spacing: -0.01em;
+  color: $text-primary;
+}
+
+.input {
+  border: 1.5px solid $line-border;
+  font-weight: $fw-medium;
+  font-size: $fs-large;
+  letter-spacing: -0.01em;
+  color: $text-primary;
+  padding: 14px 16px;
+
+  :global(.ant-input-prefix) {
+    margin-right: 8px;
+    color: $text-secondary;
+  }
+
+  :global(input.ant-input::placeholder) {
+    color: $text-secondary;
+  }
+}
+
+.checkboxText {
+  font-family: $font-tertiary;
+  font-weight: $fw-medium;
+  font-size: $fs-medium;
+  color: $text-secondary;
+}
+
+.button {
+  border: 1px solid $border-button;
+  border-radius: $radius-large;
+  padding: 24px 12px;
+  font-family: $font-tertiary;
+  font-weight: $fw-semi-bold;
+  font-size: $fs-large;
+  color: $white;
+}
+
+.divider {
+  font-family: $font-tertiary;
+  font-weight: $fw-medium;
+  font-size: $fs-medium;
+  color: $text-secondary;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid $line-border;
+  }
+
+  span {
+    margin: 0 10px;
+  }
+}
+
+.noAccountText {
+  font-family: $font-tertiary;
+  font-weight: $fw-regular;
+  font-size: $fs-large;
+  text-align: center;
+  color: $text-secondary;
+
+  .link {
+    font-weight: $fw-semi-bold;
+    font-size: $fs-large;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+  }
+}

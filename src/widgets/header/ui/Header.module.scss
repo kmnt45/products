@@ -1,0 +1,11 @@
+@use 'shared/styles/variables' as *;
+
+.header {
+  background-color: $white;
+  border-radius: $radius-large;
+  padding: 30px;
+}
+
+.title {
+  color: $title-color;
+}

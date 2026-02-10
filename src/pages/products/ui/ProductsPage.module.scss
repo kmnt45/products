@@ -1,0 +1,17 @@
+@use 'shared/styles/variables' as *;
+
+.productsPage {
+  background-color: $white;
+  border-radius: $radius-large;
+  padding: 30px;
+}
+
+.reloadButton {
+  width: 42px !important;
+  height: 42px;
+}
+
+.addButton {
+  width: 147px;
+  height: 42px;
+}

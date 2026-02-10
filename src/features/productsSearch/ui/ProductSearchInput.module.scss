@@ -1,0 +1,29 @@
+@use 'shared/styles/variables' as *;
+
+.search {
+  width: 1023px;
+  padding: 12px 20px;
+  border-radius: $radius-medium;
+  background-color: $search-input-bg;
+  border: none;
+  font-family: $font-tertiary;
+  font-weight: $fw-regular;
+  font-size: $fs-small;
+  color: $dark-gray;
+
+  :global(.ant-input-prefix) {
+    margin-right: 8px;
+  }
+
+  :global(input.ant-input::placeholder) {
+    color: $gray;
+  }
+
+  &:hover,
+  &:focus,
+  &:not(:focus) {
+    border-color: $search-input-bg;
+    box-shadow: none;
+    background-color: $search-input-bg;
+  }
+}

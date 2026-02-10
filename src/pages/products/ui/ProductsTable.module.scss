@@ -1,0 +1,162 @@
+@use 'shared/styles/variables' as *;
+
+.tableWrapper {
+  :global(.ant-table-pagination) {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  :global(.ant-table-wrapper .ant-table-pagination.ant-pagination) {
+    margin: 40px 0 0 0;
+  }
+
+  :global(.ant-pagination-total-text) {
+    margin-right: auto;
+    color: $pagination-text;
+  }
+
+  :global(.ant-pagination-item) {
+    border: 1px solid $table-border;
+    border-radius: $radius-small;
+
+    a {
+      color: $light-gray;
+    }
+  }
+
+  :global(.ant-pagination-item-active) {
+    background-color: $purple;
+    border-color: $purple;
+
+    a {
+      color: $white;
+
+      &:hover {
+        color: $white;
+      }
+    }
+  }
+
+  :global(.ant-pagination-prev a),
+  :global(.ant-pagination-next a),
+  :global(.ant-pagination-prev:hover a),
+  :global(.ant-pagination-next:hover a),
+  :global(.ant-pagination-prev:disabled a),
+  :global(.ant-pagination-next:disabled a) {
+    color: $light-gray !important;
+  }
+
+  :global(.ant-table-tbody > tr td:first-child) {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background-color: $purple;
+      transition: width 0.1s ease;
+    }
+  }
+
+  :global(.ant-table-tbody > tr:hover td:first-child)::before {
+    width: 3px;
+  }
+}
+
+.productCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.preview {
+  border: 1px solid $table-border;
+  border-radius: $radius-medium;
+  width: 48px;
+  height: 48px;
+  background-color: #c4c4c4;
+}
+
+.title {
+  font-weight: $fw-bold;
+  font-size: $fs-medium;
+  color: $text-primary;
+}
+
+.category {
+  font-weight: $fw-regular;
+  font-size: $fs-small;
+  color: $light-gray;
+}
+
+.brand,
+.sku,
+.rating {
+  font-family: $font-secondary;
+  font-weight: $fw-regular;
+  font-size: $fs-medium;
+  text-align: center;
+  color: $black;
+}
+
+.brand {
+  font-weight: $fw-bold;
+}
+
+.price {
+  font-family: $font-mono;
+  font-weight: $fw-regular;
+  font-size: $fs-medium;
+  text-align: center;
+  color: $price-color;
+
+  .priceFraction {
+    color: $gray;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.add {
+  width: 52px;
+  height: 27px;
+  border-radius: $radius-xlarge;
+  background: $primary-color;
+  border: none;
+  color: $white;
+  font-size: $fs-medium;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.iconButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    display: block;
+  }
+}
+
+.total {
+  color: #969b9f;
+  font-family: $font-roboto;
+  font-weight: $fw-regular;
+  font-size: $fs-large;
+
+  .totalCount {
+    color: $dark-gray;
+  }
+}
